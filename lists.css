@@ -1,0 +1,8 @@
+OL.withRoman {list-style-type: lower-roman}
+OL.withUpperRoman {list-style-type: upper-roman}
+OL.withAlpha {list-style-type: lower-alpha}
+OL.withUpperAlpha {list-style-type: upper-alpha}
+
+UL.square {list-style-type: square}
+UL.disc {list-style-type: disc}
+UL.circle {list-style-type: circle}
