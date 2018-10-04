@@ -56,7 +56,7 @@
             <div class="validation-message">
                 <span data-rule="valueMissing" class="hide">An email address is required.</span>
                 <span data-rule="typeMismatch" class="hide">Special characters are not allowed</span>
-
+                <span data-rule="isAol" class="hide">AOL Email address is not allowed</span>
             </div>
 
             <button type="submit" id="submit" name="submit" class="btn">Change</button>
@@ -78,6 +78,7 @@
 
     var validate = function (){
         $(".validation-message span").addClass('hide');
+        validateAgainstCustomRule();
         document.getElementById('change-email-form').checkValidity();
     },
 
@@ -95,6 +96,22 @@
           if(state[ruleName]){
               $(ele).next().find('[data-rule="' + ruleName + '"]').removeClass('hide');
           }
+        },
+        validateIsAol = function(){
+            var element = document.getElementById('email');
+            if(element.value.length > 0){
+                if(element.value.toLowerCase().indexOf("@aol.com") != -1){
+                    element.setCustomValidity('invalid');
+                    $('#email').next().find('[data-rule="isAol"]')
+                        .removeClass('hide');
+                }else{
+                    element.setCustomValidity('');
+                }
+            }
+        },
+
+        validateAgainstCustomRule = function() {
+            validateIsAol();
         };
 
     $(':input:not(:button)').each(function () {
