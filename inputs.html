@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input Elements</title>
+</head>
+<body>
+
+<form novalidate>
+    <label for="search">Search:</label>
+
+    <input type="search" id="search" name="search" autofocus>
+</form>
+
+
+<form>
+    <label for="name">Name:</label>
+    <input type="text" id="name"  name="name" required placeholder="Name and LastName">
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email"  name="email" required>
+
+    <label for="url">Url:</label>
+    <input type="url" id="url" name="url" required>
+
+    <label for="phone">Telephone</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <label for="time">Time</label>
+    <input type="time" id="time" name="time" required>
+
+    <label for="date">Date</label>
+    <input type="date" id="date" name="date" required>
+
+
+    <label for="datetime">Date and Time</label>
+    <input type="datetime-local" id="datetime" name="datetime" required>
+
+    <label for="color">Color</label>
+    <input type="color" id="color" name="color" required>
+
+    <label for="clrshirt">T-Shirt Color</label>
+    <input type="text" id="clrshirt" name="clrshirt" list="colors" required>
+    <datalist id="colors">
+        <option value="Red">Red</option>
+        <option value="Black">Black</option>
+        <option value="Green">Green</option>
+        <option value="Blue">Blue</option>
+    </datalist>
+
+</form>
+
+</body>
+</html>

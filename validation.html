@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Validation Sample</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        input:valid + .invalid {
+            visibility: hidden;
+        }
+
+        input:invalid + .invalid {
+            visibility: visible;
+        }
+
+        input:required {
+            border: 2px solid #900;
+        }
+
+        input:valid {
+            border: 2px solid #ccc;
+        }
+
+
+        .invalid{
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .hide {
+            visibility: collapse;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="container">
+
+    <form id="change-email-form" name="change-email-form">
+        <fieldset>
+            <h4>Change email address</h4>
+            <input type="text" id="username" name="username"
+                   pattern="[a-zA-Z]{5,}"
+                   placeholder="Username"
+                   maxlength="300" required>
+            <div class="validation-message">
+                <span data-rule="valueMissing" class="hide">The username is required.</span>
+                <span data-rule="patternMismatch" class="hide">Must be a series of alpha characters only (min 5, max 30).</span>
+            </div>
+
+            <input type="email" id="email" name="email"
+            placeholder="Email" required>
+            <div class="validation-message">
+                <span data-rule="valueMissing" class="hide">An email address is required.</span>
+                <span data-rule="typeMismatch" class="hide">Special characters are not allowed</span>
+
+            </div>
+
+            <button type="submit" id="submit" name="submit" class="btn">Change</button>
+            <button type="button" id="checkValidation" name="checkValidation">Validate</button>
+        </fieldset>
+    </form>
+
+</div>
+
+<script>
+    var ruleNames = [];
+
+    $("[data-rule]").each(function (i, element) {
+       var ruleName = element.getAttribute('data-rule');
+       if($.inArray(ruleName,ruleNames) < 0){
+           ruleNames.push(ruleName);
+       }
+    });
+
+    var validate = function (){
+        $(".validation-message span").addClass('hide');
+        document.getElementById('change-email-form').checkValidity();
+    },
+
+        validationFail = function(e){
+            var element = e.srcElement,
+                validity = element.validity;
+            if(!validity.valid){
+                ruleNames.forEach(function (ruleName) {
+                    checkRule(validity,ruleName, element);
+                });
+                e.preventDefault();
+            }
+        },
+        checkRule = function (state, ruleName, ele) {
+          if(state[ruleName]){
+              $(ele).next().find('[data-rule="' + ruleName + '"]').removeClass('hide');
+          }
+        };
+
+    $(':input:not(:button)').each(function () {
+        this.oninvalid = validationFail;
+        this.onblur = validate;
+    });
+
+    $('#checkValidation').click(validate);
+
+</script>
+
+</body>
+</html>
