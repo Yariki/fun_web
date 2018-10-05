@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bootstrap Validation</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+
+    <script type="application/javascript" src="jquery/jquery-3.3.1.js"></script>
+    <script type="application/javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script type="application/javascript" src="bootstrap/js/bootstrap.bundle.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body class="container">
+
+<form id="email-form">
+    <fieldset>
+        <input type="text"
+            id="username" name="username"
+               pattern="[a-zA-Z]{5,}"
+               placeholder="Username"
+               maxlength="30"
+               required
+               data-role="validate"
+               title="Username"
+               data-content="The username is required. The username must be a series of alpha-numeric characters only."
+
+        >
+        <br/>
+        <input type="email"
+            id="email" name="email"
+               data-role="validate"
+               placeholder="Email"
+               required
+               title="Email"
+               data-content="The email address is required."
+        >
+        <br/>
+        <button type="button" class="btn btn-primary"
+                data-role="trigger-validation">Validate</button>
+    </fieldset>
+</form>
+<div id="msg"></div>
+
+
+
+<script>
+
+
+
+    var ValidationUtility = function(){
+      var elements = $('[data-role="validate"]');
+      var elememtsCount = 0;
+
+      elements.popover({
+          placement: 'top'
+      });
+
+      elements.on('invalid', function(){
+         if(elememtsCount === 0){
+             $('#'+this.id).popover('show');
+             elememtsCount++;
+         }
+      });
+
+      elements.on('blur',function(){
+         $(this).popover('hide');
+      });
+
+
+      var validate = function(formSelector){
+        elememtsCount =0 ;
+        if(formSelector.indexOf('#') === -1){
+            formSelector = '#'+formSelector;
+        }
+        return $(formSelector)[0].checkValidity();
+      };
+
+
+      return {
+          validate: validate
+      }
+    };
+
+
+    $(document).ready(function () {
+
+
+    });
+
+    var validator =new ValidationUtility();
+    var selector = '[data-role="trigger-validation"]';
+
+    $(selector).click(function () {
+        if(validator.validate('email-form')){
+            $('#msg').text('Valid');
+        }else{
+            $('#msg').text('Invalid');
+        }
+    });
+
+
+</script>
+
+</body>
+</html>
