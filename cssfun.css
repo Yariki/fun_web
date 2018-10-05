@@ -1,0 +1,48 @@
+body {
+    font-family: 'Share Tech Mono','Roboto','PT Sans Narrow','Hind', sans-serif;
+}
+
+.red {
+    color: red;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+h1, h2, .heading {
+    font-weight: bolder;
+}
+
+ol li {
+    border-bottom: 1px red solid;
+    font-style: italic;
+}
+
+.message {
+    border: 2px green solid;
+}
+
+.message.error {
+    border-color: red;
+}
+
+p span {
+    font-size: 21px;
+    background-color: black;
+    color: white;
+}
+
+#divText {
+    font-variant: small-caps;
+}
+
+#justify{
+    text-align: justify;
+}
+
+div p {
+    text-transform: capitalize;
+    text-decoration: line-through;
+    text-shadow: 3px 3px lightgray;
+}
