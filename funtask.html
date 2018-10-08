@@ -21,11 +21,63 @@
 <div id="main" class="row">
     <div><a onclick="handleMenu()">&#9776;</a></div>
     <div id="mainSideLeft" class="mainSideLeft">
-        sdkfjksdjgksjgkj
+        <div id="searchDiv" class="row bottomLine sideBarBackground">
+            <label class="col">Search:</label>
+            <input type="search" id="search" name="search" class="col">
+        </div>
+        <div id="optionDiv" class="row bottomLine">
+            <div class="row">
+                <div class="col">
+                    <div class="checkbox">
+                        <input type="checkbox" id="web" name="web" >
+                        <label for="web"></label>web
+                    </div>
+
+                </div>
+                <div class="col">
+                    <input type="checkbox" id="desctop">desctop
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="checkbox" id="mobile">mobile
+                </div>
+                <div class="col">
+                    <input type="checkbox" id="support">support
+                </div>
+            </div>
+
+        </div>
+
+        <div id="dateDiv" class="row bottomLine sideBarBackground">
+            <input type="date">
+        </div>
+
     </div>
 
     <div id="mainContent" class="mainContent">
-        sdlfjkdsjgkdjfklgjk
+        <table id="table" name="table">
+            <thead>
+                <tr class="headerRow">
+                    <th class="firstCol">project name</th>
+                    <th>due date</th>
+                    <th>created</th>
+                    <th>members</th>
+                    <th>type</th>
+                    <th>status</th>
+                    <th>customer</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tableBody" name="tableBody">
+            <tr>
+                <td class="firstCol">
+                </td>
+                <td>
+                </td>
+            </tr>
+           </tbody>
+        </table>
     </div>
 </div>
 

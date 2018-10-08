@@ -4,12 +4,31 @@ function handleMenu(){
     var main = document.getElementById('main');
     var menuWidth = leftSideMenu.style.width;
 
-    if(menuWidth === "0px" || menuWidth === ""){
-        leftSideMenu.style.width = "250px";
-        main.style.marginLeft = "250px";
-    } else{
-        leftSideMenu.style.width = "0px";
-        main.style.marginLeft = "0px";
+    if(menuWidth === "0%" || menuWidth === ""){
+        leftSideMenu.style.width = "10%";
+        main.style.marginLeft ="10%"
+        main.style.width = "90%";
+
+    } else {
+        leftSideMenu.style.width = "0%";
+        main.style.marginLeft = "0%"
+        main.style.width = "100%";
+
     }
 
 }
+
+
+
+var DomStrings = {
+    tableBody: "tableBody"
+
+};
+
+
+
+
+var tableController = (function(){
+
+})();
+
