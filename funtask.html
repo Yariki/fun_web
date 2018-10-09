@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Hind|PT+Sans+Narrow|Roboto|Share+Tech+Mono" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="funtask.css">
-    <script src="funtask.js"></script>
+
     <title>Fun Task</title>
 </head>
 <body>
@@ -30,20 +30,32 @@
                 <div class="col">
                     <div class="checkbox">
                         <input type="checkbox" id="web" name="web" >
-                        <label for="web"></label>web
+                        <label for="web"></label>
                     </div>
-
+                    <label>web</label>
                 </div>
                 <div class="col">
-                    <input type="checkbox" id="desctop">desctop
+                    <div class="checkbox">
+                        <input type="checkbox" id="desctop">
+                        <label for="desctop"></label>
+                    </div>
+                    <label>desktop</label>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <input type="checkbox" id="mobile">mobile
+                    <div class="checkbox">
+                        <input type="checkbox" id="mobile">
+                        <label for="mobile"></label>
+                    </div>
+                    <label>mobile</label>
                 </div>
                 <div class="col">
-                    <input type="checkbox" id="support">support
+                    <div class="checkbox">
+                        <input type="checkbox" id="support">
+                        <label for="support"></label>
+                    </div>
+                    <label>support</label>
                 </div>
             </div>
 
@@ -59,27 +71,22 @@
         <table id="table" name="table">
             <thead>
                 <tr class="headerRow">
-                    <th class="firstCol">project name</th>
-                    <th>due date</th>
-                    <th>created</th>
-                    <th>members</th>
-                    <th>type</th>
-                    <th>status</th>
-                    <th>customer</th>
-                    <th></th>
+                    <th class="firstCol" data-property="ProjectName" > <span>project name </span> </th>
+                    <th data-property="DueDate" ><span>due date</span></th>
+                    <th data-property="Created" ><span>created</span></th>
+                    <th data-property="Members" ><span>members</span></th>
+                    <th data-property="Type" ><span>type</span></th>
+                    <th data-property="Status" ><span>status</span></th>
+                    <th data-property="Customer" ><span>customer</span></th>
+                    <th data-property></th>
                 </tr>
             </thead>
             <tbody id="tableBody" name="tableBody">
-            <tr>
-                <td class="firstCol">
-                </td>
-                <td>
-                </td>
-            </tr>
+
            </tbody>
         </table>
     </div>
 </div>
-
+<script src="funtask.js"></script>
 </body>
 </html>
