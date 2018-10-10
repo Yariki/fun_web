@@ -24,7 +24,7 @@ var IndexRepository = (function(){
     var index = 0;
 
     var getNextIndex = function () {
-        return ++i;
+        return ++index;
     };
 
     return {
@@ -118,8 +118,58 @@ function getStatus(value){
     return status;
 }
 
+var messageController = (function () {
+    var modalLayer = document.getElementById("modalLayer");
+    var messageTag = document.getElementById("message");
+    var buttonOk = document.getElementById("btnOk");
+    var buttonCancel = document.getElementById("btnCancel");
+    var internalOkCallback = null;
+    var internalCancelCallback = null;
 
-var tableController = (function(){
+    buttonOk.addEventListener('click',function(event){
+        if(internalOkCallback){
+            internalOkCallback();
+        }
+        closeModal();
+    });
+
+    buttonCancel.addEventListener('click', function (event) {
+        if(internalCancelCallback){
+            internalCancelCallback();
+        }
+        closeModal();
+    });
+
+    var showMessage = function () {
+        modalLayer.style.display = 'block';
+    };
+
+    var closeModal = function () {
+        modalLayer.style.display = 'none';
+        internalOkCallback = internalCancelCallback = null;
+    };
+
+    var setMessage = function (message){
+        messageTag.innerText = message;
+    };
+    
+    var setCallbacks = function (okCallback, cancelCallback) {
+        internalOkCallback = okCallback;
+        internalCancelCallback = cancelCallback;
+    };
+
+
+    return {
+        showMessage: function(message, okCallback, cancelCallback){
+            setCallbacks(okCallback,cancelCallback);
+            setMessage(message);
+            showMessage();
+        }
+    }
+})();
+
+
+var tableController = (function(messageController){
 
     var initialPopulateData = function(){
         setData(data);
@@ -133,12 +183,24 @@ var tableController = (function(){
     };
 
     var onDeleteItem = function (event) {
+
         var id = +this.getAttribute(DomStrings.dataColumnIdAttribute);
         var item = data.find(value => value.Id == id);
-        var index = data.indexOf(item);
-        data.splice(index,1);
 
-    }
+        messageController.showMessage("Are you sure you want to delete record with Project Name '"+ item.ProjectName +"'?",function(){
+            var index = data.indexOf(item);
+            data.splice(index,1);
+
+            var rowToRemove = document.querySelector("tr["+DomStrings.dataColumnIdAttribute +"='"+ id +"']");
+            if(rowToRemove){
+                    var parent = rowToRemove.parentNode;
+                    if(parent){
+                        parent.removeChild(rowToRemove);
+                    }
+            }
+        },
+            null);
+    };
 
     var processDeleteSubscribtion = function (body, isDeleteSubscription) {
         var links = body.querySelectorAll('['+ DomStrings.dataColumnDeleteAttrubute +']');
@@ -245,7 +307,7 @@ var tableController = (function(){
     }
 
 
-})();
+})(messageController);
 
 
 
