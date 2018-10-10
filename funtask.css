@@ -137,10 +137,9 @@ input[type=search] {
 #table td {
     padding: 0.75rem;
     width: 12.5%;
+    text-align: center;
 
 }
-
-
 
 #table tr{
     padding-top: 10px;
@@ -148,9 +147,22 @@ input[type=search] {
     margin: 10px;
 }
 
+
 #table tr:nth-child(even){background-color: rgb(15,16,18);}
 
 #tableBody tr:hover {background-color: rgb(53,62,68);}
+
+#table td a {
+    opacity: 0.5;
+    background-color: transparent;
+    text-decoration: none;
+    color: white;
+}
+
+#tableBody tr:hover a{
+    opacity: 1;
+}
+
 
 #table th {
     padding: 0.75rem;
