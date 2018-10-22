@@ -44,12 +44,13 @@ var Project = function (id, projectName, dueDate, created, members, type, status
     this.Type = type;
     this.Status = status;
     this.Customer = customer;
+
 };
 
 var data = [
     new Project(IndexRepository.getNextIndex(), 'PCo', new Date(2019,12,2), new Date(2005,12,6),null,Type.customers, Status.none, 'SAP'),
     new Project(IndexRepository.getNextIndex(),'WebSped', new Date(2017,12,15), new Date(2017,12,15),null,Type.customers, Status.completed, 'LIS'),
-    new Project(IndexRepository.getNextIndex(),'Outlookfinder', new Date(2017,10,12), new Date(2010,8,1),null,Type.customers, Status.inProgress, 'Vincent Payette'),
+    new Project(IndexRepository.getNextIndex(),'Outlookfinder', new Date(2017,10,12), new Date(2017,10,12),null,Type.customers, Status.inProgress, 'Vincent Payette'),
     new Project(IndexRepository.getNextIndex(),'Windows', new Date(1989,10,12), new Date(2020,12,31),null,Type.customers, Status.new, 'Microsoft'),
     new Project(IndexRepository.getNextIndex(),'Linux', new Date(1991,10,12), new Date(2020,12,31),null,Type.company, Status.inProgress, 'Torvalds')
 ];
@@ -81,6 +82,18 @@ function handleMenu(){
     }
 
 }
+
+
+function openRightMenu() {
+    var right = document.getElementById('rightSideMenu');
+    right.style.width = '350px';
+}
+
+function closeRightMenu() {
+    var right = document.getElementById('rightSideMenu');
+    right.style.width = '0px';
+}
+
 
 function createTag(targetTag, attributes, parentTag){
     if(targetTag === null){
@@ -221,9 +234,10 @@ var tableController = (function(messageController){
         removeTableData(body);
 
         for (var d in dataSet) {
-            var tr = createTag('tr',{},body);
+            var isFinished = dataSet[d].Created.getTime() == dataSet[d].DueDate.getTime();
+            var tr = createTag('tr', isFinished ? {class: 'finished'} : {},body);
             tr.setAttribute(DomStrings.dataColumnIdAttribute, dataSet[d].Id);
-            createTag('td',{class:'firstCol'},tr).innerText = dataSet[d].ProjectName;
+            createTag('td', isFinished ? {} : {class:'firstCol'},tr).innerText = dataSet[d].ProjectName;
             createTag('td',{},tr).innerText = dataSet[d].DueDate.toDateString();
             createTag('td',{},tr).innerText = dataSet[d].Created.toDateString();
             createTag('td',{},tr).innerText = dataSet[d].Members;

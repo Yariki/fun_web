@@ -12,19 +12,28 @@
 <body>
 
 <div id="leftSideMenu" class="sidenav">
-    <!--<a href="" class="closeButton" onclick="closeMenu()">&times;</a>-->
+    <!--<a href="" class="closeButton" onclick="closeRightMenu()">&times;</a>-->
     <a href="#">About</a>
     <a href="#">Services</a>
     <a href="#">Clients</a>
     <a href="#">Contacts</a>
 </div>
 
+<div id="rightSideMenu" class="right-sidenav">
+    <a href="" class="closeButton" onclick="closeRightMenu()">&times;</a>
+
+</div>
+
 <div id="main" class="row">
-    <div><a onclick="handleMenu()">&#9776;</a></div>
+    <div>
+        <a onclick="handleMenu()" style="float: left;">&#9776;</a>
+        <a onclick="openRightMenu()" style="float: right;">&#9776;</a>
+        <div style="clear: both;"></div>
+    </div>
     <div id="mainSideLeft" class="mainSideLeft">
-        <div id="searchDiv" class="row bottomLine sideBarBackground">
-            <label class="col">Search:</label>
-            <input type="search" id="search" name="search" class="col">
+        <div id="searchDiv" class="input-w bottomLine sideBarBackground">
+            <label for="search">Search:</label>
+            <input type="search" id="search" name="search">
         </div>
         <div id="optionDiv" class="row bottomLine">
             <div class="row">
