@@ -131,6 +131,21 @@ function getStatus(value){
     return status;
 }
 
+function populateSelects() {
+    var types = document.getElementById("types");
+    if(types !== 'undefined' || types != null){
+
+        for (var type in Type) {
+            var option = createTag('option',{},types);
+            option.value = Type[type];
+            option.text = type;
+        }
+    }
+}
+
+
+
+
 var messageController = (function () {
     var modalLayer = document.getElementById("modalLayer");
     var messageTag = document.getElementById("message");
@@ -324,6 +339,6 @@ var tableController = (function(messageController){
 })(messageController);
 
 
-
+populateSelects();
 tableController.init();
 

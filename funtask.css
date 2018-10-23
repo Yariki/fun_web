@@ -147,12 +147,18 @@ input {
     vertical-align: middle;
 }
 
-input[type=search] {
+input[type=search], input[type=text], input[type=date], select {
     border: none;
     background-color: transparent;
     color: white;
 }
 
+.form-group {
+    margin-top: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+}
 
 .headerRow {
     border-bottom: 1px solid white;
