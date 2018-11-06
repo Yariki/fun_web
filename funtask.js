@@ -47,14 +47,6 @@ var Project = function (id, projectName, dueDate, created, members, type, status
 
 };
 
-var data = [
-    new Project(IndexRepository.getNextIndex(), 'PCo', new Date(2019,12,2), new Date(2005,12,6),null,Type.customers, Status.none, 'SAP'),
-    new Project(IndexRepository.getNextIndex(),'WebSped', new Date(2017,12,15), new Date(2017,12,15),null,Type.customers, Status.completed, 'LIS'),
-    new Project(IndexRepository.getNextIndex(),'Outlookfinder', new Date(2017,10,12), new Date(2017,10,12),null,Type.customers, Status.inProgress, 'Vincent Payette'),
-    new Project(IndexRepository.getNextIndex(),'Windows', new Date(1989,10,12), new Date(2020,12,31),null,Type.customers, Status.new, 'Microsoft'),
-    new Project(IndexRepository.getNextIndex(),'Linux', new Date(1991,10,12), new Date(2020,12,31),null,Type.company, Status.inProgress, 'Torvalds')
-];
-
 var DomStrings = {
     tableBody: "tableBody",
     table: "table",
@@ -143,9 +135,6 @@ function populateSelects() {
     }
 }
 
-
-
-
 var messageController = (function () {
     var modalLayer = document.getElementById("modalLayer");
     var messageTag = document.getElementById("message");
@@ -196,11 +185,56 @@ var messageController = (function () {
     }
 })();
 
+var dataController =  (function(){
 
-var tableController = (function(messageController){
+    var data = [
+        new Project(IndexRepository.getNextIndex(), 'PCo', new Date(2019,12,2), new Date(2005,12,6),null,Type.customers, Status.none, 'SAP'),
+        new Project(IndexRepository.getNextIndex(),'WebSped', new Date(2017,12,15), new Date(2017,12,15),null,Type.customers, Status.completed, 'LIS'),
+        new Project(IndexRepository.getNextIndex(),'Outlookfinder', new Date(2017,10,12), new Date(2017,10,12),null,Type.customers, Status.inProgress, 'Vincent Payette'),
+        new Project(IndexRepository.getNextIndex(),'Windows', new Date(1989,10,12), new Date(2020,12,31),null,Type.customers, Status.new, 'Microsoft'),
+        new Project(IndexRepository.getNextIndex(),'Linux', new Date(1991,10,12), new Date(2020,12,31),null,Type.company, Status.inProgress, 'Torvalds')
+    ];
+
+
+    var internalAddItem = function (item) {
+        data.push(item);
+    };
+
+    var internalDeleteItem = function (item) {
+        var index = data.indexOf(item);
+        data.splice(index,1);
+    };
+
+    var internalFindById = function (id) {
+        return data.find(i => i.Id == id);
+    };
+
+
+
+    return {
+        addItem: function(item){
+            internalAddItem(item);
+        },
+
+        deleteItem: function (item) {
+            internalDeleteItem(item);
+        },
+        findItemById: function (id) {
+            return internalFindById(id);
+        },
+        getData: function () {
+            return data.slice(0);
+        }
+
+    };
+
+})();
+
+
+var tableController = (function(messageController,dataController){
 
     var initialPopulateData = function(){
-        setData(data);
+        setData(dataController.getData());
     };
 
      var removeTableData = function(body) {
@@ -213,11 +247,11 @@ var tableController = (function(messageController){
     var onDeleteItem = function (event) {
 
         var id = +this.getAttribute(DomStrings.dataColumnIdAttribute);
-        var item = data.find(value => value.Id == id);
+        var item = dataController.findItemById(id);
 
         messageController.showMessage("Are you sure you want to delete record with Project Name '"+ item.ProjectName +"'?",function(){
-            var index = data.indexOf(item);
-            data.splice(index,1);
+
+            dataController.deleteItem(item);
 
             var rowToRemove = document.querySelector("tr["+DomStrings.dataColumnIdAttribute +"='"+ id +"']");
             if(rowToRemove){
@@ -315,6 +349,7 @@ var tableController = (function(messageController){
         src.setAttribute(DomStrings.dataColumnSortAttribute,current);
         src.classList.remove(previous === SortingType.asc ? 'sort_asc' : 'sort_desc');
         src.classList.add(current === SortingType.asc ? 'sort_asc' : 'sort_desc');
+        var data = dataController.getData();
         data.sort((a, b) => {
             if(a[property] > b[property])
                 return current === SortingType.asc ? 1 : -1;
@@ -324,7 +359,6 @@ var tableController = (function(messageController){
         });
 
         setData(data);
-
 
     };
 
@@ -336,7 +370,7 @@ var tableController = (function(messageController){
     }
 
 
-})(messageController);
+})(messageController,dataController);
 
 
 populateSelects();
