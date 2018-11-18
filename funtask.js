@@ -6,6 +6,13 @@ var Type = {
     customers: 1
 };
 
+var Customers = {
+    first: 'Microsoft',
+    second: 'AMD',
+    third: 'NVidia',
+    fourth: 'Oracle'
+}
+
 var Status = {
     none: -1,
     new: 0,
@@ -133,6 +140,22 @@ function populateSelects() {
             option.text = type;
         }
     }
+    types.value = null;
+
+    var customers = document.getElementById('customers');
+    if(customers){
+        for (var prop in Customers) {
+            var option = createTag('option',{},customers);
+            option.text = option.value = Customers[prop];
+        }
+    }
+    customers.value = null;
+    var createButton = document.querySelector('#btnCreate');
+    if(createButton){
+        createButton.disabled = true;
+    }
+
+
 }
 
 var messageController = (function () {
@@ -230,6 +253,79 @@ var dataController =  (function(){
 
 })();
 
+
+var projectUiControler = (function(dataController){
+
+
+    var controls = {
+        projectName: null,
+        dueDate: null,
+        createdDate:  null,
+        members: null,
+        types: null,
+        customers: null
+    }
+    var createButton = null;
+
+    var setupEventListeners = function(){
+        controls.projectName = document.querySelector('#projectName');
+        if(controls.projectName){
+            controls.projectName.addEventListener('change',validate)
+        }
+        controls.dueDate = document.querySelector('#dueDate');
+        if(controls.dueDate){
+            controls.dueDate.addEventListener('change', validate);
+        }
+        controls.createdDate = document.querySelector('#createdDate');
+        if(controls.createdDate){
+            controls.createdDate.addEventListener('change',validate);
+        }
+        controls.members = document.querySelector('#members');
+        if(controls.members){
+            controls.members.addEventListener('change',validate);
+        }
+        controls.types = document.querySelector('#types');
+        if(controls.types){
+            controls.types.addEventListener('change',validate);
+        }
+        controls.customers = document.querySelector('#customers');
+        if(controls.customers){
+            controls.customers.addEventListener('changed',validate);
+        }
+        createButton = document.querySelector('#btnCreate');
+        if(createButton){
+            createButton.addEventListener('click',createNewProject);
+        }
+    };
+
+
+    var validate = function(evt){
+        var valid = true;
+        for (var prop in controls){
+            var ctrl = controls[prop];
+            valid = ctrl && ctrl.value != null && ctrl.value != undefined && ctrl.value != '';
+            if(!valid)
+                break;
+        }
+
+        createButton.disabled = !valid;
+    };
+
+    var createNewProject = function () {
+        console.log('Create new project');
+    };
+
+
+    return {
+        init: function () {
+            setupEventListeners();
+        },
+    }
+
+
+})(dataController);
+
+projectUiControler.init();
 
 var tableController = (function(messageController,dataController){
 
