@@ -6,6 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Hind|PT+Sans+Narrow|Roboto|Share+Tech+Mono" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="funtask.css">
+    <link rel="stylesheet" type="text/css" href="controls/datepicker.css">
 
     <title>Fun Task</title>
 </head>
@@ -28,11 +29,11 @@
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="dueDate">DUE DATE:</label>
-        <input type="date" id="dueDate" name="dueDate">
+        <input type="text" id="dueDate" name="dueDate" class="datepicker">
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="createdDate">CREATED DATE:</label>
-        <input type="date" id="createdDate" name="createdDate">
+        <input type="text" id="createdDate" name="createdDate" class="datepicker">
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="members">PROJECT NAME:</label>
@@ -142,7 +143,7 @@
 
 </div>
 
-
+<script src="controls/datepicker.js"></script>
 <script src="funtask.js"></script>
 </body>
 </html>
