@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Hind|PT+Sans+Narrow|Roboto|Share+Tech+Mono" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="funtask.css">
-    <link rel="stylesheet" type="text/css" href="controls/datepicker.css">
+    <link rel="stylesheet" type="text/css" href="controls/DatePickerX.css">
 
     <title>Fun Task</title>
 </head>
@@ -21,7 +21,7 @@
 </div>
 
 <div id="rightSideMenu" class="right-sidenav">
-    <a href="" class="closeButton" onclick="closeRightMenu()">&times;</a>
+    <span class="closeButton" onclick="closeRightMenu()">&times;</span>
 
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="projectName">PROJECT NAME:</label>
@@ -36,7 +36,7 @@
         <input type="text" id="createdDate" name="createdDate" class="datepicker">
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
-        <label for="members">PROJECT NAME:</label>
+        <label for="members">MEMBERS:</label>
         <input type="text" id="members" name="members">
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
@@ -103,7 +103,7 @@
         </div>
 
         <div id="dateDiv" class="row bottomLine sideBarBackground">
-            <input type="date">
+            <input type="text" class="datepicker">
         </div>
 
     </div>
@@ -143,7 +143,25 @@
 
 </div>
 
-<script src="controls/datepicker.js"></script>
+<script src="controls/DatePickerX.js"></script>
 <script src="funtask.js"></script>
+
+<script type="application/javascript">
+
+    window.addEventListener('DOMContentLoaded', function(){
+        var controls = document.querySelectorAll('input[class="datepicker"]');
+
+        for (var ctrl in controls) {
+            controls[ctrl].DatePickerX.init({
+                format           : 'yyyy-mm-dd',
+            });
+        }
+    });
+
+
+
+</script>
+
+
 </body>
 </html>

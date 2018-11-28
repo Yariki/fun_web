@@ -210,6 +210,8 @@ var messageController = (function () {
 
 var dataController =  (function(){
 
+    var dataUpcatedCallback = null;
+
     var data = [
         new Project(IndexRepository.getNextIndex(), 'PCo', new Date(2019,12,2), new Date(2005,12,6),null,Type.customers, Status.none, 'SAP'),
         new Project(IndexRepository.getNextIndex(),'WebSped', new Date(2017,12,15), new Date(2017,12,15),null,Type.customers, Status.completed, 'LIS'),
@@ -221,6 +223,9 @@ var dataController =  (function(){
 
     var internalAddItem = function (item) {
         data.push(item);
+        if(dataUpcatedCallback !== undefined && dataUpcatedCallback !== null){
+            dataUpcatedCallback();
+        }
     };
 
     var internalDeleteItem = function (item) {
@@ -247,6 +252,9 @@ var dataController =  (function(){
         },
         getData: function () {
             return data.slice(0);
+        },
+        subscribeDataUpdate: function (callback) {
+            dataUpcatedCallback = callback;
         }
 
     };
@@ -290,7 +298,7 @@ var projectUiControler = (function(dataController){
         }
         controls.customers = document.querySelector('#customers');
         if(controls.customers){
-            controls.customers.addEventListener('changed',validate);
+            controls.customers.addEventListener('change',validate);
         }
         createButton = document.querySelector('#btnCreate');
         if(createButton){
@@ -312,7 +320,7 @@ var projectUiControler = (function(dataController){
     };
 
     var createNewProject = function () {
-        console.log('Create new project');
+        dataController.addItem(new Project(IndexRepository.getNextIndex(),controls.projectName.value,  new Date(controls.dueDate.value), new Date(controls.createdDate.value),controls.members.value,getType(controls.types.value), Status.inProgress, controls.customers.value));
     };
 
 
@@ -329,9 +337,13 @@ projectUiControler.init();
 
 var tableController = (function(messageController,dataController){
 
+
+
     var initialPopulateData = function(){
         setData(dataController.getData());
     };
+
+    dataController.subscribeDataUpdate(initialPopulateData);
 
      var removeTableData = function(body) {
          processDeleteSubscribtion(body,true);
