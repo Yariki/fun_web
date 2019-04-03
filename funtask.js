@@ -280,14 +280,25 @@ var projectUiControler = (function(dataController){
         if(controls.projectName){
             controls.projectName.addEventListener('change',validate)
         }
-        controls.dueDate = document.querySelector('#dueDate');
-        if(controls.dueDate){
-            controls.dueDate.addEventListener('change', validate);
-        }
-        controls.createdDate = document.querySelector('#createdDate');
-        if(controls.createdDate){
-            controls.createdDate.addEventListener('change',validate);
-        }
+        controls.dueDate = new WindowDatePicker({
+            type:'DATE',
+            format:'DD-MM-YYYY',
+            el: '#dueDate',
+            toggleEl: '#dueDateToggle',
+            inputEl: '#dueDateValue'
+            }) ;
+        controls.dueDate.el.addEventListener('wdp.change',() => validateDates(controls.dueDate));
+
+        controls.createdDate = new WindowDatePicker({
+            type:'DATE',
+            format:'DD-MM-YYYY',
+            el: '#createdDate',
+            toggleEl: '#createdDateToggle',
+            inputEl: '#createdDateValue'
+        }) ;
+        controls.createdDate.el.addEventListener('wdp.change',() => validateDates(controls.createdDate));
+
+
         controls.members = document.querySelector('#members');
         if(controls.members){
             controls.members.addEventListener('change',validate);
@@ -310,14 +321,27 @@ var projectUiControler = (function(dataController){
     var validate = function(evt){
         var valid = true;
         for (var prop in controls){
+
+            if(prop == 'dueDate' || prop == 'createdDate'){
+                continue;
+            }
+
             var ctrl = controls[prop];
             valid = ctrl && ctrl.value != null && ctrl.value != undefined && ctrl.value != '';
             if(!valid)
                 break;
         }
-
-        createButton.disabled = !valid;
+        createButton.disabled = createButton.disabled && !valid;
     };
+
+    var validateDates = function(picker){
+
+        var reg = /^\d{2}\/\d{2}\/\d{4}$/
+        var value1 = picker.get();
+        var validDate1 = value1.value != null && value1.value.match(reg);
+        createButton.disabled =  createButton.disabled && validDate1.length < 1;
+    };
+
 
     var createNewProject = function () {
         dataController.addItem(new Project(IndexRepository.getNextIndex(),controls.projectName.value,  new Date(controls.dueDate.value), new Date(controls.createdDate.value),controls.members.value,getType(controls.types.value), Status.inProgress, controls.customers.value));

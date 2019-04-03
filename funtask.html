@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Hind|PT+Sans+Narrow|Roboto|Share+Tech+Mono" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="funtask.css">
-    <link rel="stylesheet" type="text/css" href="controls/DatePickerX.css">
+    <link rel="stylesheet" type="text/css" href="controls/datepicker/css/window-date-picker.css">
 
     <title>Fun Task</title>
 </head>
@@ -25,15 +25,19 @@
 
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="projectName">PROJECT NAME:</label>
-        <input type="text" id="projectName" name="projectName">
+        <input type="text" id="projectName" name="projectName" required>
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="dueDate">DUE DATE:</label>
-        <input type="text" id="dueDate" name="dueDate" class="datepicker">
+        <div id="dueDate"></div>
+        <input id="dueDateValue" >
+        <button id="dueDateToggle">+</button>
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="createdDate">CREATED DATE:</label>
-        <input type="text" id="createdDate" name="createdDate" class="datepicker">
+        <div id="createdDate"></div>
+        <input id="createdDateValue" >
+        <button id="createdDateToggle">+</button>
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="members">MEMBERS:</label>
@@ -103,7 +107,9 @@
         </div>
 
         <div id="dateDiv" class="row bottomLine sideBarBackground">
-            <input type="text" class="datepicker">
+            <div id="filterDate"></div>
+            <input id="filterDateValue" >
+            <button id="filterDateToggle">+</button>
         </div>
 
     </div>
@@ -143,19 +149,19 @@
 
 </div>
 
-<script src="controls/DatePickerX.js"></script>
+
+<script src="controls/datepicker/js/window-date-picker.js"></script>
 <script src="funtask.js"></script>
 
 <script type="application/javascript">
 
     window.addEventListener('DOMContentLoaded', function(){
-        var controls = document.querySelectorAll('input[class="datepicker"]');
-
-        for (var ctrl in controls) {
-            controls[ctrl].DatePickerX.init({
-                format           : 'yyyy-mm-dd',
+        var picker =  new WindowDatePicker({
+            el: '#filterDate',
+            toggleEl: '#filterDateToggle',
+            inputEl: '#filterDateValue',
+            type: 'DATE'
             });
-        }
     });
 
 
