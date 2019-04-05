@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
     <link href="https://fonts.googleapis.com/css?family=Hind|PT+Sans+Narrow|Roboto|Share+Tech+Mono" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="funtask.css">
-    <link rel="stylesheet" type="text/css" href="controls/datepicker/css/window-date-picker.css">
+    <link rel="stylesheet" type="text/css" href="controls/datepicker/css/datepicker.css">
+
+    <script src="jquery/jquery-3.3.1.js"></script>
 
     <title>Fun Task</title>
 </head>
@@ -29,15 +32,11 @@
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="dueDate">DUE DATE:</label>
-        <div id="dueDate"></div>
-        <input id="dueDateValue" >
-        <button id="dueDateToggle">+</button>
+        <input id="dueDate" data-date-format="dd-mm-yyyy">
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="createdDate">CREATED DATE:</label>
-        <div id="createdDate"></div>
-        <input id="createdDateValue" >
-        <button id="createdDateToggle">+</button>
+        <input id="createdDate" data-date-format="dd-mm-yyyy">
     </div>
     <div class="input-w form-group  bottomLine sideBarBackground">
         <label for="members">MEMBERS:</label>
@@ -107,9 +106,7 @@
         </div>
 
         <div id="dateDiv" class="row bottomLine sideBarBackground">
-            <div id="filterDate"></div>
-            <input id="filterDateValue" >
-            <button id="filterDateToggle">+</button>
+            <input id="filterDateValue" data-date-format="dd-mm-yyyy">
         </div>
 
     </div>
@@ -149,25 +146,9 @@
 
 </div>
 
-
-<script src="controls/datepicker/js/window-date-picker.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+<script src="controls/datepicker/js/bootstrap-datepicker.js"></script>
 <script src="funtask.js"></script>
-
-<script type="application/javascript">
-
-    window.addEventListener('DOMContentLoaded', function(){
-        var picker =  new WindowDatePicker({
-            el: '#filterDate',
-            toggleEl: '#filterDateToggle',
-            inputEl: '#filterDateValue',
-            type: 'DATE'
-            });
-    });
-
-
-
-</script>
-
 
 </body>
 </html>

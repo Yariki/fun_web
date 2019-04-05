@@ -2,8 +2,10 @@
 
 var Type = {
     none: -1,
-    company: 0,
-    customers: 1
+    web: 0,
+    desctop: 1,
+    mobile: 2,
+    support: 3
 };
 
 var Customers = {
@@ -154,31 +156,41 @@ function populateSelects() {
     if(createButton){
         createButton.disabled = true;
     }
-
-
 }
 
 var messageController = (function () {
-    var modalLayer = document.getElementById("modalLayer");
-    var messageTag = document.getElementById("message");
-    var buttonOk = document.getElementById("btnOk");
-    var buttonCancel = document.getElementById("btnCancel");
+    var modalLayer;
+    var messageTag ;
+    var buttonOk ;
+    var buttonCancel ;
     var internalOkCallback = null;
     var internalCancelCallback = null;
 
-    buttonOk.addEventListener('click',function(event){
-        if(internalOkCallback){
-            internalOkCallback();
-        }
-        closeModal();
-    });
 
-    buttonCancel.addEventListener('click', function (event) {
-        if(internalCancelCallback){
-            internalCancelCallback();
-        }
-        closeModal();
-    });
+    function setup(){
+        modalLayer = document.getElementById("modalLayer");
+        messageTag = document.getElementById("message");
+        buttonOk = document.getElementById("btnOk");
+        buttonCancel = document.getElementById("btnCancel");
+        internalOkCallback = null;
+        internalCancelCallback = null;
+
+        buttonOk.addEventListener('click',function(event){
+            if(internalOkCallback){
+                internalOkCallback();
+            }
+            closeModal();
+        });
+
+        buttonCancel.addEventListener('click', function (event) {
+            if(internalCancelCallback){
+                internalCancelCallback();
+            }
+            closeModal();
+        });
+
+    }
+
 
     var showMessage = function () {
         modalLayer.style.display = 'block';
@@ -204,6 +216,9 @@ var messageController = (function () {
             setCallbacks(okCallback,cancelCallback);
             setMessage(message);
             showMessage();
+        },
+        init: function(){
+            setup();
         }
     }
 })();
@@ -213,11 +228,11 @@ var dataController =  (function(){
     var dataUpcatedCallback = null;
 
     var data = [
-        new Project(IndexRepository.getNextIndex(), 'PCo', new Date(2019,12,2), new Date(2005,12,6),null,Type.customers, Status.none, 'SAP'),
-        new Project(IndexRepository.getNextIndex(),'WebSped', new Date(2017,12,15), new Date(2017,12,15),null,Type.customers, Status.completed, 'LIS'),
-        new Project(IndexRepository.getNextIndex(),'Outlookfinder', new Date(2017,10,12), new Date(2017,10,12),null,Type.customers, Status.inProgress, 'Vincent Payette'),
-        new Project(IndexRepository.getNextIndex(),'Windows', new Date(1989,10,12), new Date(2020,12,31),null,Type.customers, Status.new, 'Microsoft'),
-        new Project(IndexRepository.getNextIndex(),'Linux', new Date(1991,10,12), new Date(2020,12,31),null,Type.company, Status.inProgress, 'Torvalds')
+        new Project(IndexRepository.getNextIndex(), 'PCo', new Date(2019,12,2), new Date(2005,12,6),null,Type.desctop, Status.none, 'SAP'),
+        new Project(IndexRepository.getNextIndex(),'WebSped', new Date(2017,12,15), new Date(2017,12,15),null,Type.mobile, Status.completed, 'LIS'),
+        new Project(IndexRepository.getNextIndex(),'Outlookfinder', new Date(2017,10,12), new Date(2017,10,12),null,Type.support, Status.inProgress, 'Vincent Payette'),
+        new Project(IndexRepository.getNextIndex(),'Windows', new Date(1989,10,12), new Date(2020,12,31),null,Type.web, Status.new, 'Microsoft'),
+        new Project(IndexRepository.getNextIndex(),'Linux', new Date(1991,10,12), new Date(2020,12,31),null,Type.desctop, Status.inProgress, 'Torvalds')
     ];
 
 
@@ -274,29 +289,27 @@ var projectUiControler = (function(dataController){
         customers: null
     }
     var createButton = null;
+    var filterDate = null;
 
     var setupEventListeners = function(){
         controls.projectName = document.querySelector('#projectName');
         if(controls.projectName){
             controls.projectName.addEventListener('change',validate)
         }
-        controls.dueDate = new WindowDatePicker({
-            type:'DATE',
-            format:'DD-MM-YYYY',
-            el: '#dueDate',
-            toggleEl: '#dueDateToggle',
-            inputEl: '#dueDateValue'
-            }) ;
-        controls.dueDate.el.addEventListener('wdp.change',() => validateDates(controls.dueDate));
+        controls.dueDate = document.querySelector('#dueDate');
+        if(controls.dueDate){
+            $(controls.dueDate).datepicker();
+            controls.dueDate.addEventListener('change',validate);
+        }
 
-        controls.createdDate = new WindowDatePicker({
-            type:'DATE',
-            format:'DD-MM-YYYY',
-            el: '#createdDate',
-            toggleEl: '#createdDateToggle',
-            inputEl: '#createdDateValue'
-        }) ;
-        controls.createdDate.el.addEventListener('wdp.change',() => validateDates(controls.createdDate));
+        controls.createdDate = document.querySelector("#createdDate");
+        if(controls.createdDate){
+            $(controls.createdDate).datepicker();
+            controls.createdDate.addEventListener('change',validate);
+        }
+
+        filterDate = document.querySelector("#filterDateValue");
+        $(filterDate).datepicker();
 
 
         controls.members = document.querySelector('#members');
@@ -325,26 +338,42 @@ var projectUiControler = (function(dataController){
             if(prop == 'dueDate' || prop == 'createdDate'){
                 continue;
             }
-
             var ctrl = controls[prop];
             valid = ctrl && ctrl.value != null && ctrl.value != undefined && ctrl.value != '';
             if(!valid)
                 break;
         }
-        createButton.disabled = createButton.disabled && !valid;
+
+        var date1 = validateDates(controls.dueDate);
+        var date2 =  validateDates(controls.createdDate);
+
+        createButton.disabled = !valid || !date1 || !date2;
     };
 
     var validateDates = function(picker){
 
-        var reg = /^\d{2}\/\d{2}\/\d{4}$/
-        var value1 = picker.get();
-        var validDate1 = value1.value != null && value1.value.match(reg);
-        createButton.disabled =  createButton.disabled && validDate1.length < 1;
+        var reg = /^\d{2}\-\d{2}\-\d{4}$/
+        var value1 = picker.value;
+        var validDate1 = value1.match(reg);
+        return validDate1 != null && validDate1.length == 1;
     };
 
 
     var createNewProject = function () {
-        dataController.addItem(new Project(IndexRepository.getNextIndex(),controls.projectName.value,  new Date(controls.dueDate.value), new Date(controls.createdDate.value),controls.members.value,getType(controls.types.value), Status.inProgress, controls.customers.value));
+        var dueDate = controls.dueDate.value.split("-");
+        var createdDate = controls.createdDate.value.split("-");
+        dataController.addItem(new Project(IndexRepository.getNextIndex(),controls.projectName.value,  new Date(+dueDate[0],+dueDate[1],+dueDate[2]), new Date(+createdDate[0],+createdDate[1],+createdDate[2]),controls.members.value, controls.types.value, Status.inProgress, controls.customers.value));
+        resetValues();
+    };
+
+    var resetValues = function(){
+        controls.projectName.value = '';
+        controls.dueDate.value = '';
+        controls.createdDate.value = '';
+        controls.members.value = '';
+        controls.types.value = '';
+        controls.customers.value = '';
+        createButton.disabled = true;
     };
 
 
@@ -357,7 +386,7 @@ var projectUiControler = (function(dataController){
 
 })(dataController);
 
-projectUiControler.init();
+
 
 var tableController = (function(messageController,dataController){
 
@@ -505,6 +534,10 @@ var tableController = (function(messageController,dataController){
 })(messageController,dataController);
 
 
-populateSelects();
-tableController.init();
 
+window.addEventListener('DOMContentLoaded', function(){
+    messageController.init();
+    projectUiControler.init();
+    populateSelects();
+    tableController.init();
+});
